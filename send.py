@@ -1,13 +1,7 @@
-import pika
+from connect_rabbitmq import ConnectRMQ
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-channel = connection.channel()
+rmq = ConnectRMQ()
 
-
-channel.queue_declare(queue='my_first_queue')
-message='Hello World!'
-channel.basic_publish(exchange='',
-                      routing_key='my_first_queue',
-                      body=message)
-print("Sent the message: {}".format(message))
-connection.close()
+message = 'Hello World!'
+rmq.send_message(message)
+rmq.stop_connection()
